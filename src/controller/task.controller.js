@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllTask, createTask, getTaskById, updateTask, update, deleteTask } = require('../service/task.service');
+const { getAllTask, createTask, getTaskById, updateTask, patchTask, deleteTask } = require('../service/task.service');
 const route = express.Router();
 
 route.get('/', async (req, res) => {
@@ -47,8 +47,8 @@ route.put('/:id', async (req, res) => {
 route.patch('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { task, user_id } = req.body;
-        const data = await update(task, user_id, id);
+        const clientData = req.body;
+        const data = await patchTask(clientData, id);
         res.send(data);
     } catch (err) {
         res.send(err.message);
