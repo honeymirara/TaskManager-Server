@@ -20,7 +20,7 @@ route.get('/:id', async (req, res) => {
     } catch (err) {
         res.send(err.message);
     }
-})
+});
 
 route.post('/', async (req, res) => {
     try {
@@ -57,10 +57,9 @@ route.patch('/:id', async (req, res) => {
 
 route.delete('/:id', async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const data = await deleteTask(id);
         res.send(data);
-
     } catch (err) {
         res.send(err.message);
     }

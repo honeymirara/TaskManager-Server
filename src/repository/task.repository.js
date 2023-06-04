@@ -9,7 +9,7 @@ async function getAllTaskDB() {
 
 async function getTaskByIdDB(id) {
     const client = await pool.connect();
-    const sql = 'SELECT * FROM tasks WHERE id = $2';
+    const sql = 'SELECT * FROM tasks WHERE id = $1';
     const result = (await client.query(sql, [id])).rows;
     return result;
 };
@@ -38,7 +38,7 @@ async function updateDB(task, user_id, id) {
 
 async function deleteTaskDB(id) {
     const client = await pool.connect();
-    const sql = 'DELETE FROM tasks WHERE id= $2 RETURNING*'
+    const sql = 'DELETE FROM tasks WHERE id = $1 RETURNING*';
     const result = (await client.query(sql, [id])).rows;
     return result;
 };

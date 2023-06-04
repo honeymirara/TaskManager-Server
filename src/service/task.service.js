@@ -28,6 +28,6 @@ async function update(task, user_id, id) {
 async function deleteTask(id){
     const data = await deleteTaskDB(id);
     return data;
-}
+};
 
 module.exports = { getAllTask, getTaskById, createTask, updateTask, update, deleteTask };
