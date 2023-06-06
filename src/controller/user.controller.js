@@ -1,6 +1,6 @@
 const express = require('express');
-const { getAllUser, createUser, getUserById, updateUser, deleteUser} = require('../service/user.service');
-const {isValidId, isValidUserBody} = require('../helper/validation');
+const { getAllUser, createUser, getUserById, updateUser, patchUser, deleteUser } = require('../service/user.service');
+const { isValidId, isValidUserBody } = require('../helper/validation');
 const route = express.Router();
 
 route.get('/', async (req, res) => {
@@ -37,6 +37,17 @@ route.put('/:id', isValidId, isValidUserBody, async (req, res) => {
         const { id } = req.params;
         const { name, surname, email, pwd } = req.body;
         const data = await updateUser(name, surname, email, pwd, id);
+        res.send(data);
+    } catch (err) {
+        res.send(err.message);
+    }
+});
+
+route.patch('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const clientData = req.body;
+        const data = await patchUser(clientData, id);
         res.send(data);
     } catch (err) {
         res.send(err.message);

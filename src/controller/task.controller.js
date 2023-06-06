@@ -1,14 +1,15 @@
 const express = require('express');
 const { getAllTask, createTask, getTaskById, updateTask, patchTask, deleteTask } = require('../service/task.service');
-const {isValidId, isValidTaskBody} = require('../helper/validation');
+const { isValidId, isValidTaskBody } = require('../helper/validation');
+const { buildResponse } = require('../helper/buildResponse');
 const route = express.Router();
 
 route.get('/', async (req, res) => {
     try {
         const data = await getAllTask();
-        res.send(data);
+        buildResponse(res, 200, data);
     } catch (err) {
-        res.send(err.message);
+        buildResponse(res, 404, err.message);
     }
 });
 
@@ -16,10 +17,9 @@ route.get('/:id', isValidId, async (req, res) => {
     try {
         const { id } = req.params;
         const data = await getTaskById(id);
-        res.send(data);
-
+        buildResponse(res, 200, data);
     } catch (err) {
-        res.send(err.message);
+        buildResponse(res, 404, err.message);
     }
 });
 
@@ -27,9 +27,9 @@ route.post('/', isValidTaskBody, async (req, res) => {
     try {
         const { task, user_id } = req.body;
         const data = await createTask(task, user_id);
-        res.send(data);
+        buildResponse(res, 200, data);
     } catch (err) {
-        res.send(err.message);
+        buildResponse(res, 404, err.message);
     };
 
 });
@@ -39,20 +39,20 @@ route.put('/:id', isValidId, isValidTaskBody, async (req, res) => {
         const { id } = req.params;
         const { task, user_id } = req.body;
         const data = await updateTask(task, user_id, id);
-        res.send(data);
+        buildResponse(res, 200, data);
     } catch (err) {
-        res.send(err.message);
+        buildResponse(res, 404, err.message);
     }
 });
 
-route.patch('/:id', isValidId,  async (req, res) => {
+route.patch('/:id', isValidId, async (req, res) => {
     try {
         const { id } = req.params;
         const clientData = req.body;
         const data = await patchTask(clientData, id);
-        res.send(data);
+        buildResponse(res, 200, data)
     } catch (err) {
-        res.send(err.message);
+        buildResponse(res, 404, err.message);
     }
 });
 
@@ -60,9 +60,9 @@ route.delete('/:id', isValidId, async (req, res) => {
     try {
         const { id } = req.params;
         const data = await deleteTask(id);
-        res.send(data);
+        buildResponse(res, 200, data);
     } catch (err) {
-        res.send(err.message);
+        buildResponse(res, 404, err.message);
     }
 });
 
