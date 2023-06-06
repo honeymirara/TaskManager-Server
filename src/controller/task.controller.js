@@ -1,5 +1,6 @@
 const express = require('express');
 const { getAllTask, createTask, getTaskById, updateTask, patchTask, deleteTask } = require('../service/task.service');
+const {isValidId, isValidTaskBody} = require('../helper/validation');
 const route = express.Router();
 
 route.get('/', async (req, res) => {
@@ -11,7 +12,7 @@ route.get('/', async (req, res) => {
     }
 });
 
-route.get('/:id', async (req, res) => {
+route.get('/:id', isValidId, async (req, res) => {
     try {
         const { id } = req.params;
         const data = await getTaskById(id);
@@ -22,7 +23,7 @@ route.get('/:id', async (req, res) => {
     }
 });
 
-route.post('/', async (req, res) => {
+route.post('/', isValidTaskBody, async (req, res) => {
     try {
         const { task, user_id } = req.body;
         const data = await createTask(task, user_id);
@@ -33,7 +34,7 @@ route.post('/', async (req, res) => {
 
 });
 
-route.put('/:id', async (req, res) => {
+route.put('/:id', isValidId, isValidTaskBody, async (req, res) => {
     try {
         const { id } = req.params;
         const { task, user_id } = req.body;
@@ -44,7 +45,7 @@ route.put('/:id', async (req, res) => {
     }
 });
 
-route.patch('/:id', async (req, res) => {
+route.patch('/:id', isValidId,  async (req, res) => {
     try {
         const { id } = req.params;
         const clientData = req.body;
@@ -55,7 +56,7 @@ route.patch('/:id', async (req, res) => {
     }
 });
 
-route.delete('/:id', async (req, res) => {
+route.delete('/:id', isValidId, async (req, res) => {
     try {
         const { id } = req.params;
         const data = await deleteTask(id);
