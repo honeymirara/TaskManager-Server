@@ -1,9 +1,14 @@
 const { createUserDB, getUserByEmailDB } = require('../repository/api.repository');
 
+const bcrypt = require('bcrypt');
+const salt = 2
+
 async function createUser(name, surname, email, pwd) {
     const foundUser = await getUserByEmailDB(email);
-  if (foundUser.length) throw new Error('user already exists');
-    const data = await createUserDB(name, surname, email, pwd);
+    if (foundUser.length) throw new Error('user already exists');
+    
+    const hashedPassword = await bcrypt.hash(pwd, salt)
+    const data = await createUserDB(name, surname, email, hashedPassword);
     return data;
 };
 
