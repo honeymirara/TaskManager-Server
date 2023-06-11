@@ -1,5 +1,6 @@
 const express = require('express');
 const { buildResponse } = require('../helper/buildResponse');
+const {createUser} = require('../service/api.service');
 const route = express.Router();
 
 route.post('/', async (req, res) => {
